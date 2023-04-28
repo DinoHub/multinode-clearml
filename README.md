@@ -1,2 +1,2 @@
-# multinode-clearml
-How to run a multi-node training using ClearML
+# nodemingle
+How to run a multi-node training without finding source IP
