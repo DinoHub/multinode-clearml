@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: rank00
-spec:
-  containers:
-  - name: rank00
-    image: nodemingle:rank00
