@@ -19,6 +19,9 @@ Reference: https://github.com/pytorch/examples/blob/main/distributed/ddp/README.
 ## What are we solving here?
 To perform the above training, we need to run 4 identical scripts, which we will identify them as **global** RANK 0, RANK 1, RANK 2 and RANK 3. For this to work, scripts that are identified as RANK 1, 2 and 3 needs to know the IP Address of the script that's running as RANK 0. In normal circumstances, this is not a problem. But in situations where you its not convenient to retrieve the IP address, this can be an issue. An example is when you are running DDP as  Kubernetes PODs.
 
-## Convenience package
-This is a convenience package that will allow all the scripts from RANK 1 to N to run and wait for the RANK 0 script to run. When RANK 0 script finally runs, the scripts from RANK 1 to N will receive an IP address to perform their DDP. To allow multiple DDPs of different training to run, we also include an ID that can be defined by the user. Only when the script reaches 'End', then will control be continued and the ML frameworks DDP will take in the Rank0 IP and its own interface IP for its operation.
-![Architecture](/images/nodemingle.drawio.png "Architecture").
+## How do we solve?
+![Architecture](/images/nodemingle.drawio.png "Architecture")
+This is a package that will allow all the scripts from RANK 1 to N to run and wait for the RANK 0 script to run. When RANK 0 script finally runs, the scripts from RANK 1 to N will receive an IP address to perform their DDP. To allow multiple DDPs of different training to run, we also include an ID that can be defined by the user. Only when the script reaches 'End', then will control be continued and the ML frameworks DDP will take in the Rank0 IP and its own interface IP for its operation.
+
+This is achieved by getting RANK 1 to N to listen to a multicast message. Once all RANK 1 to N are listening, we ask RANK 0 to send a multicast message. As we rely on multicast groups, there are caveats that one should be aware of. You may read more on the use of multicast here. https://pypi.org/project/multicast-expert/
+
