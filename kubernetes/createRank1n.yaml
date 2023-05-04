@@ -1,8 +1,12 @@
-apiVersion: v1
-kind: Pod
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: rank1n
+  name: rankn
 spec:
-  containers:
-  - name: rank1n
-    image: nodemingle:rank1n
+  template:
+    spec:
+      containers:
+      - name: rankn
+        image: nodemingle:v0.1
+        command: ["python","mingle.py","--sessionid=ThatsMe","--rankN"]
+      restartPolicy: OnFailure
